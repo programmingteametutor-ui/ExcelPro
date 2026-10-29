@@ -1,0 +1,199 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Segoe UI", "Inter", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --color-brand-50: #effaf8;
+  --color-brand-100: #d5f2ec;
+  --color-brand-500: #14907f;
+  --color-brand-600: #0f766e;
+  --color-brand-700: #0c5f58;
+}
+
+:root {
+  --bg: #ffffff;
+  --panel: #f6f7f8;
+  --panel-2: #eef0f2;
+  --border: #dadde1;
+  --border-strong: #c3c7cc;
+  --text: #1f2328;
+  --muted: #5d6670;
+  --hover: #e6e9ec;
+  --active: #d5f2ec;
+  --accent: #0f766e;
+  --accent-contrast: #ffffff;
+  --grid-bg: #ffffff;
+  --grid-line: #e1e3e6;
+  --grid-text: #1f2328;
+  --header-bg: #f3f4f6;
+  --header-text: #4b535c;
+  --header-sel-bg: #d9efe9;
+  --header-sel-text: #0c5f58;
+  --sel-fill: rgba(15, 118, 110, 0.12);
+  --sel-border: #0f766e;
+  --danger: #c0262d;
+  --warn-bg: #fff6db;
+  --warn-text: #6b4e00;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #1b1d20;
+  --panel: #22252a;
+  --panel-2: #2a2e33;
+  --border: #383d44;
+  --border-strong: #4a5058;
+  --text: #e7e9ec;
+  --muted: #a0a7b0;
+  --hover: #30353b;
+  --active: #1f4a45;
+  --accent: #2bb3a0;
+  --accent-contrast: #0b1715;
+  --grid-bg: #1e2024;
+  --grid-line: #33373d;
+  --grid-text: #e7e9ec;
+  --header-bg: #26292e;
+  --header-text: #aab1ba;
+  --header-sel-bg: #234640;
+  --header-sel-text: #8fe0d3;
+  --sel-fill: rgba(43, 179, 160, 0.16);
+  --sel-border: #2bb3a0;
+  --warn-bg: #3a3218;
+  --warn-text: #f3dc97;
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+button {
+  cursor: default;
+}
+
+/* ---------- grid ---------- */
+.xp-grid {
+  position: relative;
+  overflow: hidden;
+  background: var(--grid-bg);
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+}
+.xp-scroller {
+  position: absolute;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.xp-scroller::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+.xp-scroller::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 6px;
+  border: 3px solid var(--grid-bg);
+}
+.xp-scroller::-webkit-scrollbar-corner {
+  background: var(--grid-bg);
+}
+.xp-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+}
+.xp-cell {
+  position: absolute;
+  box-sizing: border-box;
+  display: flex;
+  padding: 0 4px;
+  overflow: hidden;
+  white-space: pre;
+  line-height: 1.25;
+  color: var(--grid-text);
+}
+.xp-cell.wrap {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.xp-hdr {
+  position: absolute;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--header-bg);
+  color: var(--header-text);
+  font-size: 12px;
+  border-right: 1px solid var(--grid-line);
+  border-bottom: 1px solid var(--grid-line);
+}
+.xp-hdr.sel {
+  background: var(--header-sel-bg);
+  color: var(--header-sel-text);
+  font-weight: 600;
+}
+.xp-hdr.full {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+.xp-marquee {
+  position: absolute;
+  pointer-events: none;
+  background-image: linear-gradient(90deg, var(--sel-border) 50%, transparent 50%), linear-gradient(90deg, var(--sel-border) 50%, transparent 50%),
+    linear-gradient(0deg, var(--sel-border) 50%, transparent 50%), linear-gradient(0deg, var(--sel-border) 50%, transparent 50%);
+  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+  background-size: 8px 2px, 8px 2px, 2px 8px, 2px 8px;
+  background-position: 0 0, 0 100%, 0 0, 100% 0;
+  animation: xp-march 0.6s linear infinite;
+}
+@keyframes xp-march {
+  to {
+    background-position: 8px 0, -8px 100%, 0 -8px, 100% 8px;
+  }
+}
+.xp-editor {
+  position: absolute;
+  z-index: 30;
+  box-sizing: border-box;
+  border: 2px solid var(--sel-border);
+  background: var(--grid-bg);
+  color: var(--grid-text);
+  outline: none;
+  resize: none;
+  overflow: hidden;
+  padding: 1px 3px;
+  line-height: 1.25;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+.xp-keytrap {
+  position: absolute;
+  left: -10000px;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.xp-scroll-thin::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.xp-scroll-thin::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 3px;
+}
